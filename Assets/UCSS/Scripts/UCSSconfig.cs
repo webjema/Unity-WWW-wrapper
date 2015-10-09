@@ -16,6 +16,7 @@ namespace Ucss
 
         public static int requestDefaultTimeOut = 10; // seconds
         public static float requestDefaultTimeOutCheck = 0.5f; // seconds
+        public static float garbageCheckLimit = 300.0f; // seconds
     }
 
 }

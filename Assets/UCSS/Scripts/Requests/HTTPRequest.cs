@@ -1,14 +1,14 @@
 ﻿//#define UNITY_PRO_LICENSE
 
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 namespace Ucss
 {
     public class HTTPRequest : UCSSRequest
     {
         public byte[] bytes;
         public WWWForm formData;
-        public Hashtable headers;
+        public Dictionary<string, string> headers;
 
         public int assetVersion;
         public uint assetCRC;

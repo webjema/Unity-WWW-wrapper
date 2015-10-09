@@ -38,7 +38,7 @@ namespace Ucss
             StartCoroutine(RunPostBytesCoroutine(request));
         }
 
-        public string PostBytes(string url, byte[] bytes, Hashtable headers, EventHandlerHTTPBytes bytesCallback, EventHandlerServiceError onError = null, EventHandlerServiceTimeOut onTimeOut = null, int timeOut = 0)
+        public string PostBytes(string url, byte[] bytes, Dictionary<string, string> headers, EventHandlerHTTPBytes bytesCallback, EventHandlerServiceError onError = null, EventHandlerServiceTimeOut onTimeOut = null, int timeOut = 0)
         {
             HTTPRequest request = new HTTPRequest();
             request.url = url;
@@ -55,7 +55,7 @@ namespace Ucss
             return request.transactionId;
         }
 
-        public string PostBytes(string url, byte[] bytes, Hashtable headers, EventHandlerHTTPString stringCallback, EventHandlerServiceError onError = null, EventHandlerServiceTimeOut onTimeOut = null, int timeOut = 0)
+        public string PostBytes(string url, byte[] bytes, Dictionary<string, string> headers, EventHandlerHTTPString stringCallback, EventHandlerServiceError onError = null, EventHandlerServiceTimeOut onTimeOut = null, int timeOut = 0)
         {
             HTTPRequest request = new HTTPRequest();
             request.url = url;
@@ -288,11 +288,12 @@ namespace Ucss
             this.SetTransactionStatus(request.transactionId, transactionStatus.sending);
 
             WWW www = new WWW(request.url);
-
+#if !UNITY_WEBGL
             if (request.threadPriority != ThreadPriority.Normal)
             {
                 www.threadPriority = request.threadPriority;
             }
+#endif
 
             float lastDownloadProgress = 0.0f;
             float lastUploadProgress = 0.0f;
@@ -351,11 +352,12 @@ namespace Ucss
             {
                 www = new WWW(request.url, request.bytes);
             }
-
+#if !UNITY_WEBGL
             if (request.threadPriority != ThreadPriority.Normal)
             {
                 www.threadPriority = request.threadPriority;
             }
+#endif
 
             float lastDownloadProgress = 0.0f;
             float lastUploadProgress = 0.0f;
@@ -405,12 +407,29 @@ namespace Ucss
             this.AddTransaction(request.transactionId, request.url, request, request.timeOut);
             this.SetTransactionStatus(request.transactionId, transactionStatus.sending);
 
-            WWW www = new WWW(request.url, request.formData);
+            WWW www;
+            if (request.headers != null && request.formData == null)
+            {
+                www = new WWW(request.url, null, request.headers);
+            }
+            else
+            {
+                if (request.headers != null)
+                {
+                    www = new WWW(request.url, request.formData.data, request.headers);
+                }
+                else
+                {
+                    www = new WWW(request.url, request.formData);
+                }
+            }
 
+#if !UNITY_WEBGL
             if (request.threadPriority != ThreadPriority.Normal)
             {
                 www.threadPriority = request.threadPriority;
             }
+#endif
 
             float lastDownloadProgress = 0.0f;
             float lastUploadProgress = 0.0f;
@@ -462,10 +481,12 @@ namespace Ucss
 
             WWW www = WWW.LoadFromCacheOrDownload(request.url, request.assetVersion, request.assetCRC);
 
+#if !UNITY_WEBGL
             if (request.threadPriority != ThreadPriority.Normal)
             {
                 www.threadPriority = request.threadPriority;
             }
+#endif
 
             float lastDownloadProgress = 0.0f;
             float lastUploadProgress = 0.0f;
@@ -503,8 +524,10 @@ namespace Ucss
 
         private IEnumerator DoCallBack(WWW www, HTTPRequest request)
         {
+            this.SetTransactionWWW(request.transactionId, www);
             if (string.IsNullOrEmpty(www.error))
             {
+                this.SetTransactionStatus(request.transactionId, transactionStatus.completed);
                 if (request.wwwCallback != null)
                 {
                     request.wwwCallback(www, request.transactionId);
@@ -548,6 +571,7 @@ namespace Ucss
             }
             else
             {
+                this.SetTransactionStatus(request.transactionId, transactionStatus.error);
                 if (request.onError != null)
                 {
                     request.onError(www.error, request.transactionId);

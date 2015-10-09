@@ -18,7 +18,8 @@ namespace Ucss
         sending,
         timeOut,
         needResend,
-        completed
+        completed,
+        error
     }
 
     public struct Transaction
@@ -26,6 +27,7 @@ namespace Ucss
         public string id;
         public object data;
         public object request;
+        public WWW www;
         public transactionStatus status;
         public int timeStart;
         public int timeOut;
@@ -124,6 +126,17 @@ namespace Ucss
             this._transactions[id] = transaction;
         }
 
+        public void SetTransactionWWW(string id, WWW www)
+        {
+            if (!this._transactions.ContainsKey(id))
+            {
+                throw new UnityEngine.UnityException("Transaction [" + id + "] is not found in _transactions");
+            }
+            Transaction transaction = this._transactions[id];
+            transaction.www = www;
+            this._transactions[id] = transaction;
+        }
+
         public void RemoveTransaction(string id)
         {
             if (this._transactions.ContainsKey(id))
@@ -185,7 +198,7 @@ namespace Ucss
                     List<string> timeOuts = new List<string>();
                     foreach (KeyValuePair<string, Transaction> entry in this._transactions)
                     {
-                        if (entry.Value.status == transactionStatus.sending && entry.Value.timeStart + entry.Value.timeOut < Ucss.Common.GetSeconds())
+                        if (entry.Value.timeOut != -1 && entry.Value.status == transactionStatus.sending && entry.Value.timeStart + entry.Value.timeOut < Ucss.Common.GetSeconds())
                         {
                             timeOuts.Add(entry.Key);
                         }
@@ -204,7 +217,7 @@ namespace Ucss
                 }
             }
 
-            if (this._transactions.Count > 0 && (Time.time - this._lastGarbageCheck > 300.0f))
+            if (this._transactions.Count > 0 && (Time.time - this._lastGarbageCheck > UCSSconfig.garbageCheckLimit))
             {
                 // remove old transactions
                 List<string> toRemove = new List<string>();
