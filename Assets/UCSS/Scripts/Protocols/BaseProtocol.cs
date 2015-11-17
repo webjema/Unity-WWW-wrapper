@@ -190,9 +190,9 @@ namespace Ucss
         void Update()
         {
             // check for timeOut
-            if (this.TimeOutCheck > 0.0f && (Time.time - this._lastTimeOutCheck > this.TimeOutCheck))
+            if (this.TimeOutCheck > 0.0f && (Time.realtimeSinceStartup - this._lastTimeOutCheck > this.TimeOutCheck))
             {
-                this._lastTimeOutCheck = Time.time;
+                this._lastTimeOutCheck = Time.realtimeSinceStartup;
                 if (this._transactions.Count > 0)
                 {
                     List<string> timeOuts = new List<string>();
@@ -217,13 +217,14 @@ namespace Ucss
                 }
             }
 
-            if (this._transactions.Count > 0 && (Time.time - this._lastGarbageCheck > UCSSconfig.garbageCheckLimit))
+            if (this._transactions.Count > 0 && (Time.realtimeSinceStartup - this._lastGarbageCheck > UCSSconfig.garbageCheckLimit))
             {
                 // remove old transactions
                 List<string> toRemove = new List<string>();
                 foreach (KeyValuePair<string, Transaction> entry in this._transactions)
                 {
-                    if (entry.Value.status != transactionStatus.added && entry.Value.status != transactionStatus.needResend)
+                    if (entry.Value.timeStart + UCSSconfig.garbageCheckLimit > Ucss.Common.GetSeconds() && 
+                        (entry.Value.status == transactionStatus.completed || entry.Value.status == transactionStatus.timeOut || entry.Value.status == transactionStatus.error))
                     {
                         toRemove.Add(entry.Key);
                     }
@@ -236,7 +237,7 @@ namespace Ucss
                         Debug.LogWarning("[BaseProtocol] old transaction [" + toRemove[i] + "] is removed");
                     }
                 }
-                this._lastGarbageCheck = Time.time;
+                this._lastGarbageCheck = Time.realtimeSinceStartup;
             }
         } // Update
 
