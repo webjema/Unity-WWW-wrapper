@@ -22,7 +22,7 @@ namespace Ucss
         public EventHandlerHTTPString       stringCallback;
         public EventHandlerAudioClip        audioClipCallback;
 
-#if UNITY_PRO_LICENSE
+#if UNITY_PRO_LICENSE && !UNITY_WEBGL
         public EventHandlerMovieTexture     movieTextureCallback;
 		public EventHandlerAssetBundle      assetBundleCallback;
 #endif

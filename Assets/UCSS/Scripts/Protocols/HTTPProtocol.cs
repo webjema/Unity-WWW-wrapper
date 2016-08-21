@@ -1,4 +1,4 @@
-﻿// #define UNITY_PRO_LICENSE
+﻿// #define UNITY_PRO_LICENSE && !UNITY_WEBGL
 
 using UnityEngine;
 using System.Collections;
@@ -16,8 +16,8 @@ namespace Ucss
 	public delegate void EventHandlerDownloadProgress(float progress);
     public delegate void EventHandlerUploadProgress(float progress);
 
-	#if UNITY_PRO_LICENSE
-	public delegate void EventHandlerMovieTexture(MovieTexture movieTexture, string transactionId);
+    #if UNITY_PRO_LICENSE && !UNITY_WEBGL
+    public delegate void EventHandlerMovieTexture(MovieTexture movieTexture, string transactionId);
 	public delegate void EventHandlerAssetBundle(AssetBundle assetBundle, string transactionId);
 	#endif
 
@@ -168,7 +168,7 @@ namespace Ucss
         {
             HTTPRequest request = new HTTPRequest();
             request.url = url;
-            request.transactionId = UCSS.GenerateTransactionId(Common.Md5Sum(url));
+            request.transactionId = UCSS.GenerateTransactionId(Common.Md5Sum(url) + Random.RandomRange(1, 9999999).ToString());
             request.textureCallback = textureCallback;
             request.onError = onError;
             request.onTimeOut = onTimeOut;
@@ -196,7 +196,7 @@ namespace Ucss
         // *** END texture ***
 
         // *** AssetBundle ***
-#if UNITY_PRO_LICENSE
+#if UNITY_PRO_LICENSE && !UNITY_WEBGL
         public void GetAssetBundle(HTTPRequest request)
         {
             StartCoroutine(RunGetDataCoroutine(request));
@@ -247,7 +247,7 @@ namespace Ucss
         // *** END AudioClip ***
 
         // *** Movie ***
-#if UNITY_PRO_LICENSE
+#if UNITY_PRO_LICENSE && !UNITY_WEBGL
         public void GetMovie(HTTPRequest request)
         {
             StartCoroutine(RunGetDataCoroutine(request));
@@ -532,7 +532,7 @@ namespace Ucss
                 {
                     request.wwwCallback(www, request.transactionId);
                 }
-#if UNITY_PRO_LICENSE
+#if UNITY_PRO_LICENSE && !UNITY_WEBGL
                 else if (request.assetBundleCallback != null)
                 {
                     request.assetBundleCallback(www.assetBundle, request.transactionId);

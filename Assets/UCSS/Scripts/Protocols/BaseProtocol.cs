@@ -223,7 +223,7 @@ namespace Ucss
                 List<string> toRemove = new List<string>();
                 foreach (KeyValuePair<string, Transaction> entry in this._transactions)
                 {
-                    if (entry.Value.timeStart + UCSSconfig.garbageCheckLimit > Ucss.Common.GetSeconds() && 
+                    if (entry.Value.timeStart + UCSSconfig.garbageCheckLimit > Ucss.Common.GetSeconds() &&
                         (entry.Value.status == transactionStatus.completed || entry.Value.status == transactionStatus.timeOut || entry.Value.status == transactionStatus.error))
                     {
                         toRemove.Add(entry.Key);

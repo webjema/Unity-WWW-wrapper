@@ -108,7 +108,7 @@ namespace Ucss
         public static string GenerateTransactionId(string name)
         {
             System.Random RNG = new System.Random();
-            return name + Ucss.Common.GetSeconds().ToString() + Ucss.Common.Md5Sum(Ucss.Common.GetSeconds().ToString() + RNG.Next(999999).ToString() + name) + RNG.Next(999999).ToString();
+            return name + System.Guid.NewGuid().ToString() + Ucss.Common.Md5Sum(Ucss.Common.GetSeconds().ToString() + RNG.Next(999999).ToString() + name) + RNG.Next(999999).ToString();
         } // GenerateTransactionId
 
         public static void RemoveTransaction(UCSSservices serviceName, string id)
