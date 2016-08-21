@@ -95,20 +95,10 @@ namespace Ucss
             //Debug.Log("CSS.Instance._initedProtocols = " + UCSS.Instance._initedProtocols.Count);
         } // InitService
 
-        /*
-         * 
-         * DoRequest 
-         *
-         */
-
-
-        // no requests here for WWW warapper
-
-
         public static string GenerateTransactionId(string name)
         {
             System.Random RNG = new System.Random();
-            return name + System.Guid.NewGuid().ToString() + Ucss.Common.Md5Sum(Ucss.Common.GetSeconds().ToString() + RNG.Next(999999).ToString() + name) + RNG.Next(999999).ToString();
+            return name + System.Guid.NewGuid().ToString() + Ucss.Common.Md5Sum(Ucss.Common.GetSeconds().ToString() + RNG.Next(999999).ToString() + name) + Time.realtimeSinceStartup.ToString();
         } // GenerateTransactionId
 
         public static void RemoveTransaction(UCSSservices serviceName, string id)

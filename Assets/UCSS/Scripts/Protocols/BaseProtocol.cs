@@ -31,6 +31,7 @@ namespace Ucss
         public transactionStatus status;
         public int timeStart;
         public int timeOut;
+        public int tries;
     }
 
     public class BaseProtocol : MonoBehaviour
@@ -49,9 +50,9 @@ namespace Ucss
 
         protected transactionsMode _transactionsMode = transactionsMode.flexible;
 
-        public void InitBase(EventHandlerServiceInited initiedCallback, EventHandlerServiceError errorCallback)
+        public void InitBase(EventHandlerServiceInited initedCallback, EventHandlerServiceError errorCallback)
         {
-            this._onInitCallback = initiedCallback;
+            this._onInitCallback = initedCallback;
             this._onErrorCallback = errorCallback;
 
             this._transactions = new Dictionary<string, Transaction>();
@@ -126,14 +127,25 @@ namespace Ucss
             this._transactions[id] = transaction;
         }
 
-        public void SetTransactionWWW(string id, WWW www)
+        public void SetTransactionStartTime(string id, int time)
         {
             if (!this._transactions.ContainsKey(id))
             {
                 throw new UnityEngine.UnityException("Transaction [" + id + "] is not found in _transactions");
             }
             Transaction transaction = this._transactions[id];
-            transaction.www = www;
+            transaction.timeStart = time;
+            this._transactions[id] = transaction;
+        }
+
+        public void UpdateTransactionTry(string id)
+        {
+            if (!this._transactions.ContainsKey(id))
+            {
+                throw new UnityEngine.UnityException("Transaction [" + id + "] is not found in _transactions");
+            }
+            Transaction transaction = this._transactions[id];
+            transaction.tries++;
             this._transactions[id] = transaction;
         }
 
@@ -145,46 +157,27 @@ namespace Ucss
             }
         }
 
-        public bool TransactionValid(string id)
+        public bool IsTransactionValid(string id)
         {
             if (!this._transactions.ContainsKey(id))
             {
                 return false;
             }
-            if (this._transactions[id].status != transactionStatus.added && this._transactions[id].status != transactionStatus.sending)
+            if (this._transactions[id].status != transactionStatus.added && 
+                this._transactions[id].status != transactionStatus.sending &&
+                this._transactions[id].status != transactionStatus.needResend
+                )
             {
                 return false;
             }
             return true;
         }
 
-        protected void OnTimeOut(Transaction transaction)
+        protected virtual void OnTimeOut(Transaction transaction)
         {
-            HTTPRequest request = (HTTPRequest)transaction.request;
-            if (!string.IsNullOrEmpty(request.transactionId))
-            {
-                if (request.onTimeOut != null)
-                {
-                    request.onTimeOut(transaction.id);
-                    return;
-                }
-                if (request.onError != null)
-                {
-                    request.onError("timeout", transaction.id);
-                    return;
-                }
-                if (this._onErrorCallback != null)
-                {
-                    this._onErrorCallback("timeout", transaction.id);
-                    return;
-                }
-                throw new UnityEngine.UnityException("Transaction [" + transaction.id + "] time out, but no callbacks for it");
-            }
-            else
-            {
-                throw new UnityEngine.UnityException("Transaction [" + transaction.id + "] time out, but [request] is null");
-            }
         }
+
+
 
         // *** UPDATE ***
         void Update()

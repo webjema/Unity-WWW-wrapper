@@ -82,6 +82,11 @@ public class TestWWW : MonoBehaviour
             this.TestTimeout();
         }
 
+        if (GUILayout.Button("Test tries"))
+        {
+            this.TestTries();
+        }
+
         if (GUILayout.Button("Test error (404)"))
         {
             this.TestError();
@@ -260,6 +265,19 @@ public class TestWWW : MonoBehaviour
     {
         Debug.Log("Wait for 5 seconds...");
         UCSS.HTTP.GetString("http://ucss.webjema.com/tests/http/timeout.php", new EventHandlerHTTPString(this.OnTextDownloaded), new EventHandlerServiceError(this.OnHTTPError), new EventHandlerServiceTimeOut(this.OnHTTPTimeOut), 5);
+    }
+
+    void TestTries()
+    {
+        Debug.Log("Test tries");
+        HTTPRequest request = new HTTPRequest();
+        request.url = "http://ucss.webjema.com/tests/http/timeout.php";
+        request.stringCallback = new EventHandlerHTTPString(this.OnTextDownloaded);
+        request.onError = new EventHandlerServiceError(this.OnHTTPError);
+        request.onTimeOut = new EventHandlerServiceTimeOut(this.OnHTTPTimeOut);
+        request.timeOut = 5;
+        request.tries = 2;
+        UCSS.HTTP.GetString(request);
     }
 
     void TestError()

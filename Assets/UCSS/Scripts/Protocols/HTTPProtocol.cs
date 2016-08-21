@@ -35,7 +35,8 @@ namespace Ucss
         // *** POST BYTES ***
         public void PostBytes(HTTPRequest request)
         {
-            StartCoroutine(RunPostBytesCoroutine(request));
+            request.coroutineFactory = RunPostBytesCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
         }
 
         public string PostBytes(string url, byte[] bytes, Dictionary<string, string> headers, EventHandlerHTTPBytes bytesCallback, EventHandlerServiceError onError = null, EventHandlerServiceTimeOut onTimeOut = null, int timeOut = 0)
@@ -50,8 +51,8 @@ namespace Ucss
             request.onTimeOut = onTimeOut;
             request.timeOut = timeOut;
 
-            StartCoroutine(RunPostBytesCoroutine(request));
-
+            request.coroutineFactory = RunPostBytesCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
             return request.transactionId;
         }
 
@@ -67,8 +68,8 @@ namespace Ucss
             request.onTimeOut = onTimeOut;
             request.timeOut = timeOut;
 
-            StartCoroutine(RunPostBytesCoroutine(request));
-
+            request.coroutineFactory = RunPostBytesCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
             return request.transactionId;
         }
         // *** END post bytes ***
@@ -76,7 +77,8 @@ namespace Ucss
         // *** POST FORM ***
         public void PostForm(HTTPRequest request)
         {
-            StartCoroutine(RunPostFormCoroutine(request));
+            request.coroutineFactory = RunPostFormCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
         }
 
         public string PostForm(string url, WWWForm formData, EventHandlerHTTPBytes bytesCallback, EventHandlerServiceError onError = null, EventHandlerServiceTimeOut onTimeOut = null, int timeOut = 0)
@@ -90,8 +92,8 @@ namespace Ucss
             request.onTimeOut = onTimeOut;
             request.timeOut = timeOut;
 
-            StartCoroutine(RunPostFormCoroutine(request));
-
+            request.coroutineFactory = RunPostFormCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
             return request.transactionId;
         }
 
@@ -106,8 +108,8 @@ namespace Ucss
             request.onTimeOut = onTimeOut;
             request.timeOut = timeOut;
 
-            StartCoroutine(RunPostFormCoroutine(request));
-
+            request.coroutineFactory = RunPostFormCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
             return request.transactionId;
         }
         // *** END post form ***
@@ -116,7 +118,8 @@ namespace Ucss
         // *** GET BYTES ***
         public void GetBytes(HTTPRequest request)
         {
-            StartCoroutine(RunGetDataCoroutine(request));
+            request.coroutineFactory = RunGetDataCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
         }
 
         public string GetBytes(string url, EventHandlerHTTPBytes bytesCallback, EventHandlerServiceError onError = null, EventHandlerServiceTimeOut onTimeOut = null, int timeOut = 0)
@@ -129,8 +132,8 @@ namespace Ucss
             request.onTimeOut = onTimeOut;
             request.timeOut = timeOut;
 
-            StartCoroutine(RunGetDataCoroutine(request));
-
+            request.coroutineFactory = RunGetDataCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
             return request.transactionId;
         }
         // *** END bytes ***
@@ -139,7 +142,8 @@ namespace Ucss
         // *** STRING ***
         public void GetString(HTTPRequest request)
         {
-            StartCoroutine(RunGetDataCoroutine(request));
+            request.coroutineFactory = RunGetDataCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
         }
 
         public string GetString(string url, EventHandlerHTTPString stringCallback, EventHandlerServiceError onError = null, EventHandlerServiceTimeOut onTimeOut = null, int timeOut = 0)
@@ -152,8 +156,8 @@ namespace Ucss
             request.onTimeOut = onTimeOut;
             request.timeOut = timeOut;
 
-            StartCoroutine(RunGetDataCoroutine(request));
-
+            request.coroutineFactory = RunGetDataCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
             return request.transactionId;
         }
         // *** END string ***
@@ -161,21 +165,22 @@ namespace Ucss
         // *** TEXTURE ***
         public void GetTexture(HTTPRequest request)
         {
-            StartCoroutine(RunGetDataCoroutine(request));
+            request.coroutineFactory = RunGetDataCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
         }
 
         public string GetTexture(string url, EventHandlerHTTPTexture textureCallback, EventHandlerServiceError onError = null, EventHandlerServiceTimeOut onTimeOut = null, int timeOut = 0)
         {
             HTTPRequest request = new HTTPRequest();
             request.url = url;
-            request.transactionId = UCSS.GenerateTransactionId(Common.Md5Sum(url) + Random.RandomRange(1, 9999999).ToString());
+            request.transactionId = UCSS.GenerateTransactionId(Common.Md5Sum(url) + Random.Range(1, 9999999).ToString());
             request.textureCallback = textureCallback;
             request.onError = onError;
             request.onTimeOut = onTimeOut;
             request.timeOut = timeOut;
 
-            StartCoroutine(RunGetDataCoroutine(request));
-
+            request.coroutineFactory = RunGetDataCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
             return request.transactionId;
         }
 
@@ -189,8 +194,8 @@ namespace Ucss
             request.onTimeOut = onTimeOut;
             request.timeOut = timeOut;
 
-            StartCoroutine(RunGetDataCoroutine(request));
-
+            request.coroutineFactory = RunGetDataCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
             return request.transactionId;
         }
         // *** END texture ***
@@ -199,7 +204,8 @@ namespace Ucss
 #if UNITY_PRO_LICENSE && !UNITY_WEBGL
         public void GetAssetBundle(HTTPRequest request)
         {
-            StartCoroutine(RunGetDataCoroutine(request));
+            request.coroutineFactory = RunGetDataCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
         }
 
         public string GetAssetBundle(string url, EventHandlerAssetBundle assetBundleCallback, EventHandlerServiceError onError = null, EventHandlerServiceTimeOut onTimeOut = null, int timeOut = 0)
@@ -212,14 +218,15 @@ namespace Ucss
             request.onTimeOut = onTimeOut;
             request.timeOut = timeOut;
 
-            StartCoroutine(RunGetDataCoroutine(request));
-
+            request.coroutineFactory = RunGetDataCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
             return request.transactionId;
         }
 
         public void GetAssetBundleOrCache(HTTPRequest request)
         {
-            StartCoroutine(RunGetAssetBundleCoroutine(request));
+            request.coroutineFactory = RunGetAssetBundleCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
         }
 #endif
         // *** END AssetBundle ***
@@ -227,7 +234,8 @@ namespace Ucss
         // *** AudioClip ***
         public void GetAudioClip(HTTPRequest request)
         {
-            StartCoroutine(RunGetDataCoroutine(request));
+            request.coroutineFactory = RunGetDataCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
         }
 
         public string GetAudioClip(string url, EventHandlerAudioClip audioClipCallback, EventHandlerServiceError onError = null, EventHandlerServiceTimeOut onTimeOut = null, int timeOut = 0)
@@ -240,8 +248,8 @@ namespace Ucss
             request.onTimeOut = onTimeOut;
             request.timeOut = timeOut;
 
-            StartCoroutine(RunGetDataCoroutine(request));
-
+            request.coroutineFactory = RunGetDataCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
             return request.transactionId;
         }
         // *** END AudioClip ***
@@ -250,7 +258,8 @@ namespace Ucss
 #if UNITY_PRO_LICENSE && !UNITY_WEBGL
         public void GetMovie(HTTPRequest request)
         {
-            StartCoroutine(RunGetDataCoroutine(request));
+            request.coroutineFactory = RunGetDataCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
         }
 
         public string GetMovie(string url, EventHandlerMovieTexture movieCallback, EventHandlerServiceError onError = null, EventHandlerServiceTimeOut onTimeOut = null, int timeOut = 0)
@@ -263,8 +272,8 @@ namespace Ucss
             request.onTimeOut = onTimeOut;
             request.timeOut = timeOut;
 
-            StartCoroutine(RunGetDataCoroutine(request));
-
+            request.coroutineFactory = RunGetDataCoroutineFactory(request);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
             return request.transactionId;
         }
 #endif
@@ -272,6 +281,11 @@ namespace Ucss
 
 
         // Coroutines
+
+        private System.Func<IEnumerator> RunGetDataCoroutineFactory(HTTPRequest request)
+        {
+            return () => this.RunGetDataCoroutine(request);
+        }
 
         private IEnumerator RunGetDataCoroutine(HTTPRequest request)
         {
@@ -284,7 +298,10 @@ namespace Ucss
                 request.timeOut = this.TimeOut;
             }
 
-            this.AddTransaction(request.transactionId, request.url, request, request.timeOut);
+            if (!this.IsTransactionValid(request.transactionId))
+            {
+                this.AddTransaction(request.transactionId, request.url, request, request.timeOut);
+            }
             this.SetTransactionStatus(request.transactionId, transactionStatus.sending);
 
             WWW www = new WWW(request.url);
@@ -294,7 +311,7 @@ namespace Ucss
                 www.threadPriority = request.threadPriority;
             }
 #endif
-
+            this.SetTransactionWWW(request.transactionId, www);
             float lastDownloadProgress = 0.0f;
             float lastUploadProgress = 0.0f;
             while (!www.isDone)
@@ -320,14 +337,19 @@ namespace Ucss
                 yield return null;
             }
 
-            if (!this.TransactionValid(request.transactionId))
+            if (!this.IsTransactionValid(request.transactionId))
             {
                 Debug.LogWarning("[HTTPProtocol] [RunGetDataCoroutine] transaction [" + request.transactionId + "] finished, but is no longer valid.");
                 yield break;
             }
 
-            StartCoroutine(this.DoCallBack(www, request));
+            StartCoroutine(this.DoCallback(www, request));
         } // RunGetDataCoroutine
+
+        private System.Func<IEnumerator> RunPostBytesCoroutineFactory(HTTPRequest request)
+        {
+            return () => this.RunPostBytesCoroutine(request);
+        }
 
         private IEnumerator RunPostBytesCoroutine(HTTPRequest request)
         {
@@ -339,8 +361,10 @@ namespace Ucss
             {
                 request.timeOut = this.TimeOut;
             }
-
-            this.AddTransaction(request.transactionId, request.url, request, request.timeOut);
+            if (!this.IsTransactionValid(request.transactionId))
+            {
+                this.AddTransaction(request.transactionId, request.url, request, request.timeOut);
+            }
             this.SetTransactionStatus(request.transactionId, transactionStatus.sending);
 
             WWW www = null;
@@ -358,7 +382,7 @@ namespace Ucss
                 www.threadPriority = request.threadPriority;
             }
 #endif
-
+            this.SetTransactionWWW(request.transactionId, www);
             float lastDownloadProgress = 0.0f;
             float lastUploadProgress = 0.0f;
             while (!www.isDone)
@@ -384,14 +408,19 @@ namespace Ucss
                 yield return null;
             }
 
-            if (!this.TransactionValid(request.transactionId))
+            if (!this.IsTransactionValid(request.transactionId))
             {
                 Debug.LogWarning("[HTTPProtocol] [RunPostBytesCoroutine] transaction [" + request.transactionId + "] finished, but is no longer valid.");
                 yield break;
             }
 
-            StartCoroutine(this.DoCallBack(www, request));
+            StartCoroutine(this.DoCallback(www, request));
         } // RunPostBytesCoroutine
+
+        private System.Func<IEnumerator> RunPostFormCoroutineFactory(HTTPRequest request)
+        {
+            return () => this.RunPostFormCoroutine(request);
+        }
 
         private IEnumerator RunPostFormCoroutine(HTTPRequest request)
         {
@@ -404,10 +433,13 @@ namespace Ucss
                 request.timeOut = this.TimeOut;
             }
 
-            this.AddTransaction(request.transactionId, request.url, request, request.timeOut);
+            if (!this.IsTransactionValid(request.transactionId))
+            {
+                this.AddTransaction(request.transactionId, request.url, request, request.timeOut);
+            }
             this.SetTransactionStatus(request.transactionId, transactionStatus.sending);
 
-            WWW www;
+            WWW www = null;
             if (request.headers != null && request.formData == null)
             {
                 www = new WWW(request.url, null, request.headers);
@@ -430,7 +462,7 @@ namespace Ucss
                 www.threadPriority = request.threadPriority;
             }
 #endif
-
+            this.SetTransactionWWW(request.transactionId, www);
             float lastDownloadProgress = 0.0f;
             float lastUploadProgress = 0.0f;
             while (!www.isDone)
@@ -456,14 +488,19 @@ namespace Ucss
                 yield return null;
             }
 
-            if (!this.TransactionValid(request.transactionId))
+            if (!this.IsTransactionValid(request.transactionId))
             {
                 Debug.LogWarning("[HTTPProtocol] [RunPostFormCoroutine] transaction [" + request.transactionId + "] finished, but is no longer valid.");
                 yield break;
             }
 
-            StartCoroutine(this.DoCallBack(www, request));
+            StartCoroutine(this.DoCallback(www, request));
         } // RunPostFormCoroutine
+
+        private System.Func<IEnumerator> RunGetAssetBundleCoroutineFactory(HTTPRequest request)
+        {
+            return () => this.RunGetAssetBundleCoroutine(request);
+        }
 
         private IEnumerator RunGetAssetBundleCoroutine(HTTPRequest request)
         {
@@ -487,7 +524,7 @@ namespace Ucss
                 www.threadPriority = request.threadPriority;
             }
 #endif
-
+            this.SetTransactionWWW(request.transactionId, www);
             float lastDownloadProgress = 0.0f;
             float lastUploadProgress = 0.0f;
             while (!www.isDone)
@@ -513,18 +550,17 @@ namespace Ucss
                 yield return null;
             }
 
-            if (!this.TransactionValid(request.transactionId))
+            if (!this.IsTransactionValid(request.transactionId))
             {
                 Debug.LogWarning("[HTTPProtocol] [RunGetAssetBundleCoroutine] transaction [" + request.transactionId + "] finished, but is no longer valid.");
                 yield break;
             }
 
-            StartCoroutine(this.DoCallBack(www, request));
+            StartCoroutine(this.DoCallback(www, request));
         } // RunGetAssetBundleCoroutine
 
-        private IEnumerator DoCallBack(WWW www, HTTPRequest request)
+        private IEnumerator DoCallback(WWW www, HTTPRequest request)
         {
-            this.SetTransactionWWW(request.transactionId, www);
             if (string.IsNullOrEmpty(www.error))
             {
                 this.SetTransactionStatus(request.transactionId, transactionStatus.completed);
@@ -579,7 +615,64 @@ namespace Ucss
                 this.RemoveTransaction(request.transactionId);
             }
             yield break;
-        } // DoCallBack
+        } // DoCallback
+
+        private void SetTransactionWWW(string id, WWW www)
+        {
+            if (!this._transactions.ContainsKey(id))
+            {
+                throw new UnityEngine.UnityException("Transaction [" + id + "] is not found in _transactions");
+            }
+            Transaction transaction = this._transactions[id];
+            transaction.www = www;
+            this._transactions[id] = transaction;
+        }
+
+        protected override void OnTimeOut(Transaction transaction)
+        {
+            HTTPRequest request = (HTTPRequest)transaction.request;
+            if (!string.IsNullOrEmpty(request.transactionId))
+            {
+                if (request.tries > 1 && transaction.tries < request.tries - 1)
+                {
+                    this.RestartTransaction(transaction);
+                    return;
+                }
+                if (request.onTimeOut != null)
+                {
+                    request.onTimeOut(transaction.id);
+                    return;
+                }
+                if (request.onError != null)
+                {
+                    request.onError("timeout", transaction.id);
+                    return;
+                }
+                if (this._onErrorCallback != null)
+                {
+                    this._onErrorCallback("timeout", transaction.id);
+                    return;
+                }
+                throw new UnityEngine.UnityException("Transaction [" + transaction.id + "] time out, but no callbacks for it");
+            }
+            else
+            {
+                throw new UnityEngine.UnityException("Transaction [" + transaction.id + "] time out, but [request] is null");
+            }
+        } // OnTimeOut
+
+        protected void RestartTransaction(Transaction transaction)
+        {
+            this.UpdateTransactionTry(transaction.id);
+            this.SetTransactionStatus(transaction.id, transactionStatus.needResend);
+            this.SetTransactionStartTime(transaction.id, Ucss.Common.GetSeconds());
+            
+            HTTPRequest request = (HTTPRequest)transaction.request;
+            StopCoroutine(request.coroutine);
+            transaction.www.Dispose();
+            this.SetTransactionWWW(transaction.id, null);
+            request.coroutine = StartCoroutine(request.coroutineFactory());
+        } // RestartTransaction
 
     } // HTTPProtocol
 }

@@ -8,5 +8,6 @@ namespace Ucss
         public EventHandlerServiceError onError;
         public EventHandlerServiceTimeOut onTimeOut;
         public int timeOut;
+        public int tries;
     }
 }
