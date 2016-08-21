@@ -1,0 +1,7 @@
+Library/
+Temp/
+ProjectSettings/ClusterInputManager.asset
+ProjectSettings/UnityConnectSettings.asset
+Unity-WWW-wrapper.CSharp.csproj
+Unity-WWW-wrapper.sln
+.vs/Unity-WWW-wrapper/v14/.suo
