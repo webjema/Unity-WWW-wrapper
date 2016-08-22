@@ -12,5 +12,6 @@
     public delegate void EventHandlerServiceInited();
     public delegate void EventHandlerServiceError(string error, string transactionId);
     public delegate void EventHandlerServiceTimeOut(string transactionId);
+    public delegate void EventHandlerServiceTimeOutRetry(string transactionId);
     public delegate void EventHandlerResponse(object data, string transactionId);
 }

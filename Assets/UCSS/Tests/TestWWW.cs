@@ -276,7 +276,7 @@ public class TestWWW : MonoBehaviour
         request.onError = new EventHandlerServiceError(this.OnHTTPError);
         request.onTimeOut = new EventHandlerServiceTimeOut(this.OnHTTPTimeOut);
         request.timeOut = 5;
-        request.tries = 2;
+        request.maxTries = 2;
         UCSS.HTTP.GetString(request);
     }
 

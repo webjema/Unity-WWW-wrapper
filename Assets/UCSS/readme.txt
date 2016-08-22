@@ -10,7 +10,7 @@ Allows to make requests using one line of code and get results of request via ca
 WWW wrapper adds customizable timeouts to Unity3D WWW class functionality.
 Using WWW wrapper your code will be clean and easy to understand.
 
-Unity 3.4.0+ compatible
+Unity 5.0.0+ compatible
 
 Please, read full documentation on plugin website http://ucss.webjema.com/http/
 
@@ -25,6 +25,9 @@ Webjema.com
 -----------------
  Version History
 -----------------
+1.3:
++ NEW: [HTTPProtocol] has tries option
+Some parts are refactored.
 
 1.2:
 + NEW: [HTTPProtocol] methods return [transactionId]

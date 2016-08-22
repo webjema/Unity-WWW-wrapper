@@ -513,7 +513,10 @@ namespace Ucss
                 request.timeOut = this.TimeOut;
             }
 
-            this.AddTransaction(request.transactionId, request.url, request, request.timeOut);
+            if (!this.IsTransactionValid(request.transactionId))
+            {
+                this.AddTransaction(request.transactionId, request.url, request, request.timeOut);
+            }
             this.SetTransactionStatus(request.transactionId, transactionStatus.sending);
 
             WWW www = WWW.LoadFromCacheOrDownload(request.url, request.assetVersion, request.assetCRC);
@@ -633,8 +636,12 @@ namespace Ucss
             HTTPRequest request = (HTTPRequest)transaction.request;
             if (!string.IsNullOrEmpty(request.transactionId))
             {
-                if (request.tries > 1 && transaction.tries < request.tries - 1)
+                if (request.maxTries > 1 && transaction.tries < request.maxTries - 1)
                 {
+                    if (request.onTimeOutRetry != null)
+                    {
+                        request.onTimeOutRetry(transaction.id);
+                    }
                     this.RestartTransaction(transaction);
                     return;
                 }

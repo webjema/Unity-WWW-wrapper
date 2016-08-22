@@ -7,7 +7,8 @@ namespace Ucss
 
         public EventHandlerServiceError onError;
         public EventHandlerServiceTimeOut onTimeOut;
+        public EventHandlerServiceTimeOutRetry onTimeOutRetry;
         public int timeOut;
-        public int tries;
+        public int maxTries;
     }
 }
